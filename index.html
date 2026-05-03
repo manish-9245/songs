@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sangeet Performances Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        audio {
+            width: 100%;
+            height: 40px;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="max-w-4xl mx-auto py-10 px-4">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-pink-600 mb-2">Ashish & Vaishnavi's Sangeet</h1>
+            <p class="text-lg text-gray-600">Dance Performances & Song Management</p>
+        </header>
+
+        <div id="app" class="space-y-8">
+            <!-- Content will be injected here by JS -->
+        </div>
+    </div>
+
+    <script>
+        const data = [
+            {
+                category: "Ladke Walon Ka Dance",
+                time: "",
+                performances: [
+                    { id: 1, title: "Ashish’s Cousin Sisters - Neha, Tanu and Rani", file: "songorder/ladke%20waale/Neha_Rani_Tannu_1.mp3", original_file: "songorder/ladke waale/Neha_Rani_Tannu_1.mp3" },
+                    { id: 2, title: "Ashish’s Brother and Cousin Brother - Manish and Shashank", file: "songorder/ladke%20waale/Shashank_Aman_Raja_2.mp3", original_file: "songorder/ladke waale/Shashank_Aman_Raja_2.mp3" },
+                    { id: 3, title: "Ashish’s Bua (Shimla) and Ashish’s Cousin Sister (Neha)", file: "songorder/ladke%20waale/Shimla_Neha_3.mp3", original_file: "songorder/ladke waale/Shimla_Neha_3.mp3" },
+                    { id: 4, title: "Ashish’s Cousin Sisters - Neha and Tanu", file: "songorder/ladke%20waale/Neha_Tannu_4.mp3", original_file: "songorder/ladke waale/Neha_Tannu_4.mp3" },
+                    { id: 5, title: "Family Mashup: Parents, Mama-Mami, Mausa-Mausi, Uncle-Aunty", file: "songorder/ladke%20waale/Mashup_Family_5.mp3", original_file: "songorder/ladke waale/Mashup_Family_5.mp3" },
+                    { id: 6, title: "Ashish’s Office Friends Dance", file: "songorder/ladke%20waale/Office_6.mp3", original_file: "songorder/ladke waale/Office_6.mp3" }
+                ]
+            },
+            {
+                category: "Ashish and Vaishnavi Dance",
+                time: "9:00 PM - 9:15 PM",
+                performances: [
+                    { id: 7, title: "Ashish and Vaishnavi Dance", file: "songorder/Ashish_Vaishnavi_7.mp3", original_file: "songorder/Ashish_Vaishnavi_7.mp3" }
+                ]
+            },
+            {
+                category: "Ladki Walon Ka Dance",
+                time: "9:15 PM - 9:30 PM",
+                performances: [
+                    { id: 8, title: "Vaishnavi’s Mom, bhabhi, didi, chachi and friend", file: "songorder/ladki%20waale/ladki_waale_8.mp3", original_file: "songorder/ladki waale/ladki_waale_8.mp3" },
+                    { id: 9, title: "Vaishnavi’s bhabhi and friend", file: "songorder/ladki%20waale/ladki_waale_9.mp3", original_file: "songorder/ladki waale/ladki_waale_9.mp3" },
+                    { id: 10, title: "Vaishnavi’s friends", file: "songorder/ladki%20waale/ladki_waale_10.mp3", original_file: "songorder/ladki waale/ladki_waale_10.mp3" },
+                    { id: 11, title: "Ladki Waale Performance 4 (Extra Track)", file: "songorder/ladki%20waale/ladki_waale_11.mp3", original_file: "songorder/ladki waale/ladki_waale_11.mp3" }
+                ]
+            }
+        ];
+
+        const appContainer = document.getElementById('app');
+
+        data.forEach(section => {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'bg-white rounded-xl shadow-md overflow-hidden';
+            
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'bg-pink-100 px-6 py-4 border-b border-pink-200 flex justify-between items-center';
+            
+            let headerHTML = `<h2 class="text-2xl font-bold text-pink-800">${section.category}</h2>`;
+            if (section.time) {
+                headerHTML += `<span class="bg-pink-200 text-pink-800 text-sm font-semibold px-3 py-1 rounded-full">${section.time}</span>`;
+            }
+            headerDiv.innerHTML = headerHTML;
+            sectionDiv.appendChild(headerDiv);
+
+            const listDiv = document.createElement('div');
+            listDiv.className = 'divide-y divide-gray-200';
+
+            section.performances.forEach((perf, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'p-6 hover:bg-gray-50 transition duration-150 ease-in-out';
+                
+                itemDiv.innerHTML = `
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-gray-800 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
+                                    ${perf.id}
+                                </span>
+                                <h3 class="text-lg font-semibold text-gray-900">${perf.title}</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 ml-11">${perf.original_file.split('/').pop()}</p>
+                        </div>
+                        <div class="flex-1 flex flex-col sm:flex-row items-center gap-4">
+                            <audio controls class="flex-1">
+                                <source src="${perf.file}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            <a href="${perf.file}" download="${perf.original_file.split('/').pop()}" 
+                               class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 whitespace-nowrap">
+                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                Download
+                            </a>
+                        </div>
+                    </div>
+                `;
+                listDiv.appendChild(itemDiv);
+            });
+
+            sectionDiv.appendChild(listDiv);
+            appContainer.appendChild(sectionDiv);
+        });
+    </script>
+</body>
+</html>
