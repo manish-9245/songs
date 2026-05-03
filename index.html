@@ -64,6 +64,20 @@
                     { id: 10, title: "Vaishnavi’s friends", file: "songorder/ladki%20waale/ladki_waale_10.mp3", original_file: "songorder/ladki waale/ladki_waale_10.mp3" },
                     { id: 11, title: "Ladki Waale Performance 4 (Extra Track)", file: "songorder/ladki%20waale/ladki_waale_11.mp3", original_file: "songorder/ladki waale/ladki_waale_11.mp3" }
                 ]
+            },
+            {
+                category: "Ring Ceremony",
+                time: "9:30 PM Onwards",
+                performances: [
+                    { id: 12, title: "Ring Ceremony Background Music", file: "", original_file: "Pending file upload", loop: true }
+                ]
+            },
+            {
+                category: "Closing",
+                time: "10:00 PM",
+                performances: [
+                    { id: 13, title: "Closing Performance / Final Dance", file: "", original_file: "Pending file upload" }
+                ]
             }
         ];
 
@@ -90,6 +104,46 @@
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'p-6 hover:bg-gray-50 transition duration-150 ease-in-out';
                 
+                let mediaControls = '';
+                if (perf.file || perf.id === 12) {
+                    // Even if file is pending for ring ceremony, show the player structure or just show the loop toggle
+                    // Wait, if no file, the audio player won't work, but let's show it anyway if it's ring ceremony or if there's a file
+                    const audioSrc = perf.file ? perf.file : '';
+                    const isLoop = perf.loop ? 'checked' : '';
+                    const loopAttr = perf.loop ? 'loop' : '';
+                    
+                    mediaControls = `
+                        <div class="flex-1 flex flex-col sm:flex-row items-center gap-4">
+                            <div class="flex-1 flex flex-col gap-2 w-full">
+                                <audio controls class="w-full" ${loopAttr} id="audio-${perf.id}">
+                                    <source src="${audioSrc}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                                <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer self-end sm:self-start">
+                                    <input type="checkbox" class="rounded text-pink-600 focus:ring-pink-500" ${isLoop} 
+                                           onchange="document.getElementById('audio-${perf.id}').loop = this.checked">
+                                    Loop Audio
+                                </label>
+                            </div>
+                            ${perf.file ? `
+                            <a href="${perf.file}" download="${perf.original_file.split('/').pop()}" 
+                               class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 whitespace-nowrap">
+                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                Download
+                            </a>
+                            ` : `<span class="text-gray-400 italic text-sm border border-gray-200 rounded px-3 py-1">Audio to be added</span>`}
+                        </div>
+                    `;
+                } else {
+                    mediaControls = `
+                        <div class="flex-1 flex items-center justify-end">
+                            <span class="text-gray-400 italic text-sm border border-gray-200 rounded px-3 py-1">Audio to be added</span>
+                        </div>
+                    `;
+                }
+
                 itemDiv.innerHTML = `
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="flex-1">
@@ -101,19 +155,7 @@
                             </div>
                             <p class="text-sm text-gray-500 ml-11">${perf.original_file.split('/').pop()}</p>
                         </div>
-                        <div class="flex-1 flex flex-col sm:flex-row items-center gap-4">
-                            <audio controls class="flex-1">
-                                <source src="${perf.file}" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
-                            <a href="${perf.file}" download="${perf.original_file.split('/').pop()}" 
-                               class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 whitespace-nowrap">
-                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                </svg>
-                                Download
-                            </a>
-                        </div>
+                        ${mediaControls}
                     </div>
                 `;
                 listDiv.appendChild(itemDiv);
