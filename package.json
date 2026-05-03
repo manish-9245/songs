@@ -4,9 +4,10 @@
     "description": "Sangeet Dance Performances",
     "main": "server.js",
     "scripts": {
+        "postinstall": "git lfs install && git lfs pull",
         "start": "node server.js"
     },
     "dependencies": {
-        "express": "^4.18.2"
+        "express": "^4.22.1"
     }
 }
