@@ -37,6 +37,13 @@
     <script>
         const data = [
             {
+                category: "Background Music (BGM)",
+                time: "Anytime",
+                performances: [
+                    { id: 0, title: "General Event Background Music", file: "", original_file: "Pending file upload", loop: true }
+                ]
+            },
+            {
                 category: "Ladke Walon Ka Dance",
                 time: "",
                 performances: [
@@ -105,9 +112,8 @@
                 itemDiv.className = 'p-6 hover:bg-gray-50 transition duration-150 ease-in-out';
                 
                 let mediaControls = '';
-                if (perf.file || perf.id === 12) {
-                    // Even if file is pending for ring ceremony, show the player structure or just show the loop toggle
-                    // Wait, if no file, the audio player won't work, but let's show it anyway if it's ring ceremony or if there's a file
+                if (perf.file || perf.loop !== undefined) {
+                    // Show player if file exists or if it's meant to be a looping track like BGM/Ring Ceremony
                     const audioSrc = perf.file ? perf.file : '';
                     const isLoop = perf.loop ? 'checked' : '';
                     const loopAttr = perf.loop ? 'loop' : '';
