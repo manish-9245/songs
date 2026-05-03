@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sangeet-pwa-v1';
+const CACHE_NAME = 'sangeet-pwa-v2';
 const urlsToCache = [
     './',
     './index.html',
